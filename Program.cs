@@ -4,12 +4,7 @@ builder.Services.ConfigureHttpJsonOptions(o => o.SerializerOptions.PropertyNamin
 
 var app = builder.Build();
 
-var data = builder.Configuration.Get<PortfolioData>();
-
-if (data is null)
-{
-  throw new InvalidOperationException("Missing portfolio config");
-}
+var data = builder.Configuration.Get<PortfolioData>() ?? throw new InvalidOperationException("Missing portfolio config");
 
 app.MapGet("/profile", (string key) => {
   var accessKey = data.AccessKeys.FirstOrDefault(k => k.Key == key);
