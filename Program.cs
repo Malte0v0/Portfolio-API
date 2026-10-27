@@ -6,12 +6,12 @@ var app = builder.Build();
 
 var data = builder.Configuration.Get<PortfolioData>();
 
-app.MapGet("/profile", (string key) => {
-  if (data is null)
-  {
-    throw new InvalidOperationException("Missing portfolio config");
-  }
+if (data is null)
+{
+  throw new InvalidOperationException("Missing portfolio config");
+}
 
+app.MapGet("/profile", (string key) => {
   var accessKey = data.AccessKeys.FirstOrDefault(k => k.Key == key);
 
   if (accessKey is null || accessKey.ExpiresAt <= DateOnly.FromDateTime(DateTime.Now)) {
